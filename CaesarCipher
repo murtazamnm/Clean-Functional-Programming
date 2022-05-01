@@ -1,0 +1,49 @@
+module CaesarCipher
+import StdEnv
+
+/* Write a function that gets a text (string)
+ * an integer key and returns encrypted text back.
+ * Encryption should be done with Caesar Cipher.
+ * Encryption with Caesar code is based on an alphabet shift.
+ * For example if key is 3, every character is changed with one
+ * 3 steps right from it:
+ * Plain Alphabet         - ABCDEFGHIJKLMNOPQRSTUVWXYZ
+ * Caesar Alphabet, Key=3 - DEFGHIJKLMNOPQRSTUVWXYZABC
+ *
+ * So, if the text is "apple" and key is 3, encrypted text
+ * would be 'dssoh'.
+ * 'a' +3 -> 'd'
+ * 'p' +3 -> 's'
+ * 'l' +3 -> 'o'
+ * 'e' +3 -> 'h'
+ */
+
+alphas :: [Char]
+alphas = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z']
+alphasCap = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z']
+
+getStr :: [Char] -> String
+getStr haha = { x \\ x <- haha }
+    
+caesar :: String Int -> String
+caesar str n 
+| n < 0 = getStr [ getNeg y \\ y <- [ x \\ x <-: str ]]
+= getStr [ getPl y \\ y <- [ x \\ x <-: str ]]
+
+where
+    getInd charac = hd [ b \\ a <- alphas & b <- [0..] | charac == a]
+    getIndCap charac = hd [ b \\ a <- alphasCap & b <- [0..] | charac == a]
+    getNeg ch
+    | ch == ' ' = ' '
+    | isMember ch alphas = alphas!!(( 26 + ((getInd ch) + n) ) rem 26)
+    = alphasCap!!(( 26 + ((getIndCap ch) + n) ) rem 26)
+    getPl ch
+    | ch == ' ' = ' '
+    | isMember ch alphas = alphas!!(((getInd ch) + n ) rem 26)
+    = alphasCap!!(((getIndCap ch) + n ) rem 26)
+//Start = caesar "apple" 3 // "dssoh"
+//Start = caesar "apple" -5 // "vkkgz"
+//Start = caesar "apple" 30 // "ettpi"
+//Start = caesar "apple" 26 // "apple"
+// Start = caesar "caesar" 7 // "jhlzhy"
+//Start = caesar "Hello darkness my old FRIEND" 7 // "Olssv khyrulzz tf vsk MYPLUK"
